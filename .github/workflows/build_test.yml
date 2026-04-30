@@ -51,13 +51,25 @@ jobs:
           only-severities: critical,high
           exit-code: false
           
+      - name: Generate .env file from GitHub Secrets
+        run: |
+          cat > ./TpDocker2/.env <<EOF
+          MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+          MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER=${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+          EOF
+        shell: bash
+
       - name: Build Docker Stack
-        run: docker compose up -d
+        run: docker compose -f ./TpDocker2/docker-compose.yml up -d
 
       - name: Docker ps
-        run: docker compose ps
+        run: docker compose -f ./TpDocker2/docker-compose.yml ps
 
       - name: Docker inspect API health
         run: |
-          CONTAINER=$(docker compose ps -q api)
+          CONTAINER=$(docker compose -f ./TpDocker2/docker-compose.yml ps -q api)
           docker inspect -f '{{.State.Health.Status}}' "$CONTAINER"
