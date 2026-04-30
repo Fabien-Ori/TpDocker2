@@ -68,8 +68,8 @@ jobs:
 
       - name: Docker ps
         run: docker compose ps
-
+        
       - name: Docker inspect API health
         run: |
-          CONTAINER=$(docker compose -f ./TpDocker2/docker-compose.yml ps -q api)
+          CONTAINER=$(docker compose -f ./docker-compose.yml ps -q api)
           docker inspect -f '{{.State.Health.Status}}' "$CONTAINER"
