@@ -53,7 +53,7 @@ jobs:
           
       - name: Generate .env file from GitHub Secrets
         run: |
-          cat > ./TpDocker2/.env <<EOF
+          cat > .env <<EOF
           MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
           MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
           MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
@@ -64,10 +64,10 @@ jobs:
         shell: bash
 
       - name: Build Docker Stack
-        run: docker compose -f ./TpDocker2/docker-compose.yml up -d
+        run: docker compose up -d
 
       - name: Docker ps
-        run: docker compose -f ./TpDocker2/docker-compose.yml ps
+        run: docker compose ps
 
       - name: Docker inspect API health
         run: |
