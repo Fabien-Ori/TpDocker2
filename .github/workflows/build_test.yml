@@ -36,7 +36,7 @@ jobs:
         uses: docker/scout-action@v1
         with:
           command: cves, recommendations
-          images: my-app:1.0.0
+          image: my-app:1.0.0
           file: ./api/Dockerfile
           only-severities: critical,high
           exit-code: false
@@ -46,7 +46,18 @@ jobs:
         uses: docker/scout-action@v1
         with:
           command: cves, recommendations
-          images: my-python:1.0.0
+          image: my-python:1.0.0
           file: ./api/Dockerfile
           only-severities: critical,high
           exit-code: false
+          
+      - name: Build Docker Stack
+        run: docker compose up -d
+
+      - name: Docker ps
+        run: docker compose ps
+
+      - name: Docker inspect API health
+        run: |
+          CONTAINER=$(docker compose ps -q api)
+          docker inspect -f '{{.State.Health.Status}}' "$CONTAINER"
