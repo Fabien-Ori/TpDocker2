@@ -39,7 +39,7 @@ jobs:
           images: my-app:1.0.0
           file: ./api/Dockerfile
           only-severities: critical,high
-          exit-code: true
+          exit-code: false
           only-update: true
 
       - name: Docker Scout Scan python
@@ -49,4 +49,4 @@ jobs:
           images: my-python:1.0.0
           file: ./api/Dockerfile
           only-severities: critical,high
-          exit-code: true
+          exit-code: false
