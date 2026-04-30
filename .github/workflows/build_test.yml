@@ -73,3 +73,11 @@ jobs:
         run: |
           CONTAINER=$(docker compose -f ./docker-compose.yml ps -q api)
           docker inspect -f '{{.State.Health.Status}}' "$CONTAINER"
+
+      - name: Tag and push Docker images
+        run: |
+          docker tag my-app:1.0.0 ${{ secrets.DOCKERHUB_USERNAME }}/my-app:1.0.0
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-app:1.0.0
+
+          docker tag my-python:1.0.0 ${{ secrets.DOCKERHUB_USERNAME }}/my-python:1.0.0
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-python:1.0.0
