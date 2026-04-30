@@ -1,0 +1,27 @@
+name: Build and Test Application
+#Controls when the action will run
+on:
+#Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  build_test:
+    #The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: action/checkout@v4
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Build app image for scanning
+        run: docker build -t my-app:1.0.0 -f ./api/Dockerfile ./api
+
+      - name: Build Python image for scanning
+        run: docker build -t my-python:1.0.0 -f ./api/Dockerfile ./api
+
+      - name: Build mongo image for scanning
+        run: docker build -t my-mongo:1.0.0 -f ./mongo/Dockerfile ./mongo
